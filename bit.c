@@ -24,16 +24,21 @@ void setBitParents(BIT *bit, int n)
 original será representada na posição x+1 da BIT.*/
 void setBitValues(BIT *bit, int arr[], int n)
 {
-    int i, parent = (*bit).parents[n + 1], val = 0;
+    int i, j, parent, val;
 
+    (*bit).values[0] = 0;
     /* soma a partir da posição do nó pai, até a posição
     correspondente ao nó no vetor original*/
-    for (i = parent; i <= n; i++)
+    for (i = 0; i < n; i++)
     {
-        val += arr[i];
+        parent = (*bit).parents[i + 1];
+        val = 0;
+        for (j = parent; j <= i; j++)
+        {
+            val += arr[j];
+        }
+        (*bit).values[i + 1] = val;
     }
-
-    (*bit).values[n + 1] = val;
 }
 
 //Constrói e retorna uma BIT para um dado vetor arr de tamanho n.
@@ -46,14 +51,7 @@ BIT constructBITree(int arr[], int n)
     bit.values = values;
 
     setBitParents(&bit, n + 1);
-
-
-    bit.values[0] = 0;
-
-    for (i = 0; i < n; i++)
-    {
-        setBitValues(&bit, arr, i);
-    }
+    setBitValues(&bit, arr, n);
 
     return bit;
 }
@@ -77,6 +75,8 @@ int main()
     arr[6] = -3;
 
     BIT bit = constructBITree(arr, TAM);
+
+    for(i=0;i<=TAM;i++) printf("%d %d\n",i,bit.values[i]);
 
     int index = 1;
     index -= index & (-index);

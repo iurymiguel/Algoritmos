@@ -7,6 +7,7 @@ typedef struct BIT
     int *values;
 } BIT;
 
+//Seta os pais de cada nó.
 void setBitParents(BIT *bit, int n)
 {
     int i, index;
@@ -20,7 +21,7 @@ void setBitParents(BIT *bit, int n)
     }
 }
 
-/*Atualiza a BIT. Nó 0 é a raiz, sempre com valor 0. Cada posição x do vetor
+/*Seta os valores na BIT. Nó 0 é a raiz, sempre com valor 0. Cada posição x do vetor
 original será representada na posição x+1 da BIT.*/
 void setBitValues(BIT *bit, int arr[], int n)
 {

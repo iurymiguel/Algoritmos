@@ -16,6 +16,7 @@ void setBitParents(BIT *bit, int n)
     for (i = 1; i < n; i++)
     {
         index = i;
+        //index & (-index) pega o ultimo bit setado.
         index -= index & (-index);
         (*bit).parents[i] = index;
     }
@@ -56,10 +57,30 @@ BIT constructBITree(int arr[], int n)
 
     return bit;
 }
+
 //Retorna a soma dos elementos de arr[0..index].
-int getSum(int index)
+int getSum(BIT *bit, int arr[], int index)
 {
-    return 0;
+    int val = 0;
+    index++;
+    while (index > 0)
+    {
+        val += (*bit).values[index];
+        index = (*bit).parents[index];
+    }
+    return val;
+}
+
+void update(BIT *bit, int arr[], int index, int value, int n)
+{
+    int sum = value;
+    index++;
+    while (index <= n)
+    {
+        (*bit).values[index] = sum;
+        sum = getSum(bit, arr, index);
+        index += index & (-index);
+    }
 }
 
 int main()
@@ -77,22 +98,19 @@ int main()
 
     BIT bit = constructBITree(arr, TAM);
 
-    for(i=0;i<=TAM;i++) printf("%d %d\n",i,bit.values[i]);
+    for (i = 0; i < TAM; i++)
+        printf("Index: %d Value: %d\n", i, bit.values[i]);
 
-    int index = 1;
-    index -= index & (-index);
+    update(&bit, arr, 2, 5, TAM);
 
-    printf("%d\n", index);
+    printf("\n\nBIT após atualização\n");
 
-    index = 4;
-    index += index & (-index);
+    for (i = 0; i < TAM; i++)
+        printf("Index: %d Value: %d\n", i, bit.values[i]);
 
-    printf("%d\n", index);
+    printf("\n\n");
 
-    index = 4;
-    index = index & (-index);
-
-    printf("%d\n", index);
+    printf("Soma: %d\n", getSum(&bit, arr, 4));
 
     return 0;
 }

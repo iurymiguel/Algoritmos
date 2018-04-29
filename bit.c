@@ -73,12 +73,10 @@ int getSum(BIT *bit, int arr[], int index)
 
 void update(BIT *bit, int arr[], int index, int value, int n)
 {
-    int sum = value;
     index++;
     while (index <= n)
     {
-        (*bit).values[index] = sum;
-        sum = getSum(bit, arr, index);
+        (*bit).values[index] += value;
         index += index & (-index);
     }
 }
